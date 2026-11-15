@@ -1,0 +1,37 @@
+# dependencies
+/node_modules
+
+# next.js
+/.next/
+/out/
+
+# production
+/build
+
+# misc
+.DS_Store
+*.pem
+
+# debug
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+
+# env files — never commit secrets
+.env
+.env.*
+!.env.example
+
+# typescript
+*.tsbuildinfo
+next-env.d.ts
+
+# photos (downloaded by npm run photos:download; credited in src/lib/photos.ts)
+/public/photos/*.webp
+/public/photos/*.jpg
+
+# logs
+*.log
+
+# os
+Thumbs.db
