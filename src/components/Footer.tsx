@@ -3,7 +3,6 @@ import { MessageCircle, MapPin } from "lucide-react";
 import { LogoMark } from "./Logo";
 import { NAV_LINKS, SITE } from "@/lib/site";
 import { SERVICES } from "@/lib/services";
-import { PHOTO_CREDITS } from "@/lib/photos";
 
 export function Footer() {
   const year = new Date().getFullYear();
@@ -102,42 +101,6 @@ export function Footer() {
               {SITE.city}
             </li>
           </ul>
-        </div>
-      </div>
-
-      {/* Photo credits — good practice even though the Pexels Licence does not require it */}
-      <div className="border-t border-cream/10">
-        <div className="mx-auto max-w-7xl px-5 py-5 md:px-8">
-          <p className="text-xs leading-relaxed text-stone">
-            Photography:{" "}
-            {PHOTO_CREDITS.map((c, i) => (
-              <span key={c.file}>
-                {i > 0 && ", "}
-                <a
-                  href={c.page}
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className="underline decoration-stone/50 underline-offset-2 transition-colors hover:text-cream"
-                >
-                  {c.photographer}
-                </a>
-              </span>
-            ))}{" "}
-            via Pexels,{" "}
-            <a
-              href="https://www.pexels.com/license/"
-              target="_blank"
-              rel="noopener noreferrer"
-              className="underline decoration-stone/50 underline-offset-2 transition-colors hover:text-cream"
-            >
-              Pexels License
-            </a>
-            . Full credits in{" "}
-            <Link href="/photos/CREDITS.md" className="underline decoration-stone/50 underline-offset-2 transition-colors hover:text-cream">
-              /photos/CREDITS.md
-            </Link>
-            .
-          </p>
         </div>
       </div>
 
