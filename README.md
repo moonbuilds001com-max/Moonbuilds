@@ -54,10 +54,12 @@ npm run lint         # checks the code for problems
 
 ### Note about photos
 
-The photos are **not committed to git** — they are downloaded from the Pexels CDN
-by `npm run photos:download` (script: `scripts/download-photos.mjs`). Run it once
-before deploying. Each photo's photographer and licence were verified on its own
-Pexels page and are credited in `public/photos/CREDITS.md` and in the site footer.
+The optimised photos **are committed to git** (about 2 MB total — the Pexels
+License allows this), so the deployed site always has its images. To rebuild
+them from the originals (e.g. after changing a photo), run
+`npm run photos:download` — it re-downloads from the Pexels CDN and optimises.
+Each photo's photographer and licence were verified on its own Pexels page and
+are credited in `public/photos/CREDITS.md` and in `src/lib/photos.ts`.
 
 ---
 
@@ -126,23 +128,48 @@ check the Pro plan terms.
 
 **Cost:** generous free tier, paid plans from ~$19/mo when you outgrow it.
 
-### Option C — Cloudflare Pages
+### Option C — Cloudflare (Workers, via the OpenNext adapter)
 
-1. https://dash.cloudflare.com → **Workers & Pages → Create → Pages → Connect to Git**.
-2. Pick the repo. Build command `npm run build`, build output directory `.next`.
-   (`Workers & Pages → Create → Pages → Connect to Git`)
-3. Add environment variables in **Settings → Variables and Secrets**, then redeploy.
-4. Free tier: `*.pages.dev` domain; custom domains supported.
+This project is already wired for Cloudflare: `wrangler.jsonc`,
+`open-next.config.ts`, `public/_headers` and the scripts below are committed.
 
-**Cost:** very generous free tier; Cloudflare's CDN is strong in East Africa.
+**Deploy from your own machine (quickest first publish):**
+
+1. Install Node.js 22+ (the Cloudflare tooling wants a newer Node than the site
+   itself needs — https://nodejs.org, LTS installer).
+2. In this folder, run:
+
+```bash
+npm run deploy
+```
+
+3. A browser window opens — log in to your Cloudflare account and click
+   **Allow**. The site builds and goes live at
+   `https://moonbuilds.<your-subdomain>.workers.dev`.
+
+**Deploy automatically from GitHub (recommended after the first publish):**
+
+1. Push the repo to GitHub (see Step 0 above).
+2. Go to https://dash.cloudflare.com → **Workers & Pages → Create → Workers →
+   Connect to a Git repository** (sign up/in with GitHub when asked).
+3. Select the repo. Cloudflare reads `wrangler.jsonc` — the build command
+   `npx opennextjs-cloudflare build` is detected automatically.
+4. **Settings → Variables and Secrets** — add `NEXT_PUBLIC_SITE_URL`
+   (and later `RESEND_API_KEY`, `CONTACT_TO_EMAIL`, `CONTACT_FROM_EMAIL`),
+   then redeploy.
+5. Every `git push` now builds and deploys automatically.
+
+**Cost:** Workers free tier includes 100,000 requests/day — plenty for a
+studio site. Custom domains are added in the Worker's
+**Settings → Domains & Routes**.
 
 ### Quick comparison
 
-| | Vercel | Netlify | Cloudflare Pages |
+| | Vercel | Netlify | Cloudflare Workers |
 | --- | --- | --- | --- |
-| Next.js support | Best (it's made by Vercel) | Good (uses a Next adapter) | Good, needs the build output set to `.next` |
-| Email API route | Works out of the box | Works (serverless functions) | Works (Functions) |
-| Free tier | Personal use | Business-friendly | Business-friendly |
+| Next.js support | Best (it's made by Vercel) | Good (uses a Next adapter) | Good (OpenNext adapter, configured in this repo) |
+| Email API route | Works out of the box | Works (serverless functions) | Works (Worker with Node compatibility) |
+| Free tier | Personal use | Business-friendly | 100k requests/day, business-friendly |
 | Custom domain | Yes | Yes | Yes |
 
 ### Adding your custom domain (e.g. `moonbuilds.com`)
@@ -166,5 +193,7 @@ moonbuilds-next/
 ├─ public/photos/     downloaded photos + CREDITS.md (not committed)
 ├─ scripts/           photo download/optimisation script
 ├─ .env.example       list of environment variables to fill in
-└─ netlify.toml       Netlify build settings
+├─ netlify.toml       Netlify build settings
+├─ wrangler.jsonc     Cloudflare Worker settings (name, compatibility, assets)
+└─ open-next.config.ts  Cloudflare/OpenNext adapter configuration
 ```

@@ -1,0 +1,26 @@
+{
+  "$schema": "node_modules/wrangler/config-schema.json",
+  // Cloudflare Worker that runs the MOONBUILDS site (built by @opennextjs/cloudflare)
+  "main": ".open-next/worker.js",
+  "name": "moonbuilds",
+  "compatibility_date": "2024-12-30",
+  "compatibility_flags": [
+    // Enable Node.js APIs in the Workers runtime (required by Next.js)
+    "nodejs_compat",
+    // Allow fetching public URLs (Resend API, Turnstile, etc.)
+    "global_fetch_strictly_public"
+  ],
+  "assets": {
+    "directory": ".open-next/assets",
+    "binding": "ASSETS"
+  },
+  "services": [
+    {
+      "binding": "WORKER_SELF_REFERENCE",
+      "service": "moonbuilds"
+    }
+  ],
+  "observability": {
+    "enabled": true
+  }
+}

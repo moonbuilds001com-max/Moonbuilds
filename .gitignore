@@ -26,9 +26,16 @@ yarn-error.log*
 *.tsbuildinfo
 next-env.d.ts
 
-# photos (downloaded by npm run photos:download; credited in src/lib/photos.ts)
-/public/photos/*.webp
+# photos: the optimised .webp/.jpg variants ARE committed (needed for deploy).
+# Raw originals are not; re-download them with: npm run photos:download
 /public/photos/*.jpg
+!public/photos/og.jpg
+
+# cloudflare / opennext
+/.open-next/
+/.wrangler/
+.wrangler
+.dev.vars
 
 # logs
 *.log

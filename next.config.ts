@@ -15,3 +15,8 @@ const nextConfig: NextConfig = {
 };
 
 export default nextConfig;
+
+// Integrates the Cloudflare adapter with `next dev` (bindings, env vars).
+// No-op during production builds.
+import { initOpenNextCloudflareForDev } from "@opennextjs/cloudflare";
+initOpenNextCloudflareForDev();
