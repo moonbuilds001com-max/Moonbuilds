@@ -54,6 +54,11 @@ function StationCard({ station }: { station: Station }) {
     <div
       className="scene-card pointer-events-none absolute inset-0 flex items-center px-5 md:items-end md:px-0"
       data-card={station.id}
+      // Keeps the card inside the *visible* screen: the scene is sized to
+      // 100lvh (largest viewport), so when the address bar is shown the
+      // visible area is smaller by (100lvh - 100dvh). Padding by that
+      // amount keeps a centred card centred and a bottom card tappable.
+      style={{ paddingBottom: "calc(100lvh - 100dvh)" }}
     >
       <div className="scene-card-inner pointer-events-auto w-full max-w-xl rounded-2xl border border-cream/10 bg-ink/60 p-6 backdrop-blur-xl md:mb-24 md:ml-12 md:p-8">
         <p className="font-mono text-[11px] uppercase tracking-[0.22em] text-ember">
@@ -294,10 +299,12 @@ export function SceneWalk() {
     <div
       ref={rootRef}
       className="scene relative h-[100svh] overflow-hidden bg-ink"
-      // 100dvh tracks the phone browser's collapsing toolbars so the scene
-      // always fills the visible screen (svh is the fallback when dvh is
-      // unsupported — invalid inline declarations are ignored).
-      style={{ height: "100dvh", ["--px" as string]: 0, ["--py" as string]: 0 }}
+      // 100lvh = largest possible viewport, so the pinned scene is never
+      // shorter than the visible screen (no black band when the phone
+      // browser's address bar toggles). svh is the fallback for browsers
+      // without lvh. The card wrapper compensates for the difference so
+      // nothing important hides behind the address bar.
+      style={{ height: "100lvh", ["--px" as string]: 0, ["--py" as string]: 0 }}
     >
       {STATIONS.map((station) => (
         <Plate key={station.id} station={station} active={false} useMobileImage={narrow} />
