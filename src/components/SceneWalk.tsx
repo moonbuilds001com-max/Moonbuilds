@@ -14,9 +14,11 @@ const FallbackScene = dynamic(() => import("./FallbackScene"), { ssr: false });
 function Plate({
   station,
   active,
+  useMobileImage,
 }: {
   station: Station;
   active: boolean;
+  useMobileImage?: boolean;
 }) {
   const [failed, setFailed] = useState(false);
   return (
@@ -31,7 +33,7 @@ function Plate({
           <FallbackScene stationId={station.id} />
         ) : (
           <Image
-            src={station.image}
+            src={useMobileImage ? station.mobileImage : station.image}
             alt={station.imageAlt}
             fill
             priority={station.id === "home"}
@@ -176,16 +178,20 @@ function StationStack() {
  * The walk-through: a pinned, scroll-scrubbed cross-fade between
  * full-screen photo plates with a slow push-in, pointer-responsive
  * depth parallax, vignette and film grain. Falls back to a stacked
- * layout on small screens or when reduced motion is requested.
+ * layout when reduced motion is requested.
  */
 export function SceneWalk() {
   const rootRef = useRef<HTMLDivElement>(null);
   const [stacked, setStacked] = useState(true);
+  const [narrow, setNarrow] = useState(true);
 
   useEffect(() => {
     const mqReduce = window.matchMedia("(prefers-reduced-motion: reduce)");
     const mqMobile = window.matchMedia("(max-width: 767px)");
-    const decide = () => setStacked(mqReduce.matches || mqMobile.matches);
+    const decide = () => {
+      setStacked(mqReduce.matches);
+      setNarrow(mqMobile.matches);
+    };
     decide();
     mqReduce.addEventListener("change", decide);
     mqMobile.addEventListener("change", decide);
@@ -287,11 +293,11 @@ export function SceneWalk() {
   return (
     <div
       ref={rootRef}
-      className="scene relative h-screen overflow-hidden bg-ink"
+      className="scene relative h-[100svh] overflow-hidden bg-ink"
       style={{ ["--px" as string]: 0, ["--py" as string]: 0 }}
     >
       {STATIONS.map((station) => (
-        <Plate key={station.id} station={station} active={false} />
+        <Plate key={station.id} station={station} active={false} useMobileImage={narrow} />
       ))}
       {STATIONS.map((station) => (
         <StationCard key={station.id} station={station} />

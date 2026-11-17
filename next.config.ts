@@ -17,6 +17,9 @@ const nextConfig: NextConfig = {
 export default nextConfig;
 
 // Integrates the Cloudflare adapter with `next dev` (bindings, env vars).
-// No-op during production builds.
 import { initOpenNextCloudflareForDev } from "@opennextjs/cloudflare";
-initOpenNextCloudflareForDev();
+// Dev-only: skipped for production builds so the build never needs to
+// start the Miniflare runtime (which fails on some Windows setups).
+if (process.env.NODE_ENV === "development") {
+  initOpenNextCloudflareForDev();
+}
