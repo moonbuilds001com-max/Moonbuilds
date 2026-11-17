@@ -26,7 +26,7 @@ export const PROJECTS: Project[] = [
     slug: "prime-springs",
     title: "Prime Springs",
     category: "Hospitality & Water · Concept",
-    year: "2025",
+    year: "2026",
     statusLabel: "MOONBUILDS concept / demonstration",
     cover: "/photos/project-prime-springs.webp",
     coverAlt:

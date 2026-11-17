@@ -9,6 +9,10 @@ const nextConfig: NextConfig = {
   poweredByHeader: false,
   outputFileTracingRoot: projectRoot,
   images: {
+    // Photos are pre-optimised WebPs (≤300 KB each, see scripts/download-photos.mjs).
+    // Serving them directly is much faster than on-the-fly optimisation on
+    // Cloudflare Workers, and every phone gets byte-identical files.
+    unoptimized: true,
     formats: ["image/avif", "image/webp"],
     remotePatterns: [],
   },

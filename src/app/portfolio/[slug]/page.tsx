@@ -144,8 +144,7 @@ export default async function ProjectDetailPage({
                 </h2>
                 <p className="mt-3 text-sm leading-relaxed text-cream/70">
                   This is MOONBUILDS concept and demonstration work — built by
-                  us to show our approach. It has no client, no live site and no
-                  outcome claims, because none of those things exist to claim.
+                  us to show our approach.
                 </p>
                 {project.outcome ? (
                   <p className="mt-4 rounded-xl border border-ember/40 bg-ember/10 p-4 text-sm text-cream">

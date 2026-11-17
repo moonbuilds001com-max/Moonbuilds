@@ -36,6 +36,7 @@ function Plate({
             src={useMobileImage ? station.mobileImage : station.image}
             alt={station.imageAlt}
             fill
+            loading="eager"
             priority={station.id === "home"}
             sizes="100vw"
             className="scene-plate-img object-cover"
@@ -60,7 +61,7 @@ function StationCard({ station }: { station: Station }) {
       // amount keeps a centred card centred and a bottom card tappable.
       style={{ paddingBottom: "calc(100lvh - 100dvh)" }}
     >
-      <div className="scene-card-inner pointer-events-auto w-full max-w-xl rounded-2xl border border-cream/10 bg-ink/60 p-6 backdrop-blur-xl md:mb-24 md:ml-12 md:p-8">
+      <div className="scene-card-inner pointer-events-auto w-full max-w-xl rounded-2xl border border-cream/10 bg-ink/85 p-6 shadow-2xl shadow-ink/60 backdrop-blur-xl md:mb-24 md:ml-12 md:p-8">
         <p className="font-mono text-[11px] uppercase tracking-[0.22em] text-ember">
           {station.label}
         </p>
@@ -77,7 +78,7 @@ function StationCard({ station }: { station: Station }) {
             {station.heading}
           </h2>
         )}
-        <p className="mt-4 max-w-md text-sm leading-relaxed text-cream/80 md:text-base">
+        <p className="mt-4 max-w-md text-[15px] leading-relaxed text-cream/95 md:text-base">
           {station.body}
         </p>
         <div className="mt-6 flex flex-wrap gap-3">
@@ -130,7 +131,7 @@ function StationStack() {
           />
           <div className="absolute inset-0 bg-gradient-to-t from-ink/90 via-ink/35 to-ink/40" />
           <div className="relative flex min-h-[92svh] items-end px-5 pb-16 pt-28">
-            <div className="w-full max-w-xl rounded-2xl border border-cream/10 bg-ink/55 p-6 backdrop-blur-xl">
+            <div className="w-full max-w-xl rounded-2xl border border-cream/10 bg-ink/85 p-6 shadow-2xl shadow-ink/60 backdrop-blur-xl">
               <p className="font-mono text-[11px] uppercase tracking-[0.22em] text-ember">
                 {station.label}
               </p>
