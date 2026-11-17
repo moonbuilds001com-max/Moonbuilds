@@ -52,10 +52,10 @@ function Plate({
 function StationCard({ station }: { station: Station }) {
   return (
     <div
-      className="scene-card absolute bottom-14 left-5 right-5 md:bottom-24 md:left-12 md:right-auto md:max-w-xl"
+      className="scene-card pointer-events-none absolute inset-0 flex items-center px-5 md:items-end md:px-0"
       data-card={station.id}
     >
-      <div className="scene-card-inner rounded-2xl border border-cream/10 bg-ink/60 p-6 backdrop-blur-xl md:p-8">
+      <div className="scene-card-inner pointer-events-auto w-full max-w-xl rounded-2xl border border-cream/10 bg-ink/60 p-6 backdrop-blur-xl md:mb-24 md:ml-12 md:p-8">
         <p className="font-mono text-[11px] uppercase tracking-[0.22em] text-ember">
           {station.label}
         </p>
@@ -294,7 +294,10 @@ export function SceneWalk() {
     <div
       ref={rootRef}
       className="scene relative h-[100svh] overflow-hidden bg-ink"
-      style={{ ["--px" as string]: 0, ["--py" as string]: 0 }}
+      // 100dvh tracks the phone browser's collapsing toolbars so the scene
+      // always fills the visible screen (svh is the fallback when dvh is
+      // unsupported — invalid inline declarations are ignored).
+      style={{ height: "100dvh", ["--px" as string]: 0, ["--py" as string]: 0 }}
     >
       {STATIONS.map((station) => (
         <Plate key={station.id} station={station} active={false} useMobileImage={narrow} />
