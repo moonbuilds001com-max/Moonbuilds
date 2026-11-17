@@ -21,7 +21,7 @@ export const SITE = {
 /** Canonical site URL, configurable per deployment via NEXT_PUBLIC_SITE_URL. */
 export const SITE_URL =
   process.env.NEXT_PUBLIC_SITE_URL?.replace(/\/$/, "") ||
-  "https://moonbuilds.co.ke";
+  "https://moonbuilds-website.moonbuilds001-com.workers.dev";
 
 export const NAV_LINKS = [
   { href: "/", label: "Home" },
