@@ -44,6 +44,7 @@ export default function PortfolioPage() {
                     src={project.cover}
                     alt={project.coverAlt}
                     fill
+                    loading="eager"
                     sizes="(min-width: 768px) 50vw, 100vw"
                     className="object-cover transition-transform duration-700 ease-out group-hover:scale-[1.03]"
                   />

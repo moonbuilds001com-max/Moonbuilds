@@ -50,7 +50,7 @@ export const PROJECTS: Project[] = [
     slug: "kitefold",
     title: "Kitefold",
     category: "Architecture & Fabrication · Concept",
-    year: "2025",
+    year: "2026",
     statusLabel: "MOONBUILDS concept / demonstration",
     cover: "/photos/project-kitefold.webp",
     coverAlt:
@@ -74,7 +74,7 @@ export const PROJECTS: Project[] = [
     slug: "dustline-300",
     title: "Dustline 300",
     category: "Energy & Industrial · Concept",
-    year: "2024",
+    year: "2026",
     statusLabel: "MOONBUILDS concept / demonstration",
     cover: "/photos/project-dustline-300.webp",
     coverAlt:
@@ -98,7 +98,7 @@ export const PROJECTS: Project[] = [
     slug: "future-objects",
     title: "Future Objects",
     category: "Product Design & 3D · Concept",
-    year: "2024",
+    year: "2026",
     statusLabel: "MOONBUILDS concept / demonstration",
     cover: "/photos/project-future-objects.webp",
     coverAlt:

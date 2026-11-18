@@ -23,7 +23,7 @@ function Plate({
   const [failed, setFailed] = useState(false);
   return (
     <div
-      className={`scene-plate absolute inset-0 transition-opacity duration-100 ${
+      className={`scene-plate absolute inset-0 ${
         active ? "opacity-100" : "opacity-0"
       }`}
       data-station={station.id}
@@ -61,7 +61,7 @@ function StationCard({ station }: { station: Station }) {
       // amount keeps a centred card centred and a bottom card tappable.
       style={{ paddingBottom: "calc(100lvh - 100dvh)" }}
     >
-      <div className="scene-card-inner pointer-events-auto w-full max-w-xl rounded-2xl border border-cream/10 bg-ink/85 p-6 shadow-2xl shadow-ink/60 backdrop-blur-xl md:mb-24 md:ml-12 md:p-8">
+      <div className="scene-card-inner pointer-events-auto w-full max-w-xl rounded-2xl border border-cream/10 bg-ink/85 p-6 shadow-2xl shadow-ink/60 backdrop-blur-md md:mb-24 md:ml-12 md:p-8">
         <p className="font-mono text-[11px] uppercase tracking-[0.22em] text-ember">
           {station.label}
         </p>
@@ -131,7 +131,7 @@ function StationStack() {
           />
           <div className="absolute inset-0 bg-gradient-to-t from-ink/90 via-ink/35 to-ink/40" />
           <div className="relative flex min-h-[92svh] items-end px-5 pb-16 pt-28">
-            <div className="w-full max-w-xl rounded-2xl border border-cream/10 bg-ink/85 p-6 shadow-2xl shadow-ink/60 backdrop-blur-xl">
+            <div className="w-full max-w-xl rounded-2xl border border-cream/10 bg-ink/85 p-6 shadow-2xl shadow-ink/60 backdrop-blur-md">
               <p className="font-mono text-[11px] uppercase tracking-[0.22em] text-ember">
                 {station.label}
               </p>
@@ -233,8 +233,16 @@ export function SceneWalk() {
         start: "top top",
         end: () => `+=${(count - 1) * 100}%`,
         pin: true,
-        scrub: 0.6,
+        scrub: 0.45,
         anticipatePin: 1,
+        // When scrolling stops, glide to the nearest station so the scene
+        // always settles on a fully visible photo + card, never mid-fade.
+        snap: {
+          snapTo: 1 / (count - 1),
+          duration: { min: 0.25, max: 0.6 },
+          delay: 0.1,
+          ease: "power2.inOut",
+        },
         onUpdate: (self) => {
           const idx = Math.min(
             count - 1,
@@ -249,11 +257,11 @@ export function SceneWalk() {
 
     for (let i = 1; i < count; i++) {
       const at = (i - 1) + (1 - hold); // position in timeline units
-      // Cross-fade plates
-      tl.to(plates[i - 1], { opacity: 0, duration: 0.4, ease: "none" }, at);
+      // Cross-fade plates (softened blend)
+      tl.to(plates[i - 1], { opacity: 0, duration: 0.4, ease: "power1.inOut" }, at);
       tl.to(
         plates[i],
-        { opacity: 1, duration: 0.4, ease: "none" },
+        { opacity: 1, duration: 0.4, ease: "power1.inOut" },
         at
       );
       // Slow push-in on the incoming plate across its full window
@@ -262,13 +270,14 @@ export function SceneWalk() {
         { scale: 1.0, duration: hold + 0.4, ease: "none" },
         at
       );
-      // Cards
-      tl.to(cards[i - 1], { autoAlpha: 0, yPercent: -8, duration: 0.25 }, at);
+      // Cards: fade the outgoing card fully OUT before the incoming one
+      // appears, so text never overlaps mid-swap
+      tl.to(cards[i - 1], { autoAlpha: 0, yPercent: -8, duration: 0.2, ease: "power1.in" }, at);
       tl.fromTo(
         cards[i],
         { autoAlpha: 0, yPercent: 12 },
-        { autoAlpha: 1, yPercent: 0, duration: 0.35 },
-        at + 0.15
+        { autoAlpha: 1, yPercent: 0, duration: 0.3, ease: "power2.out" },
+        at + 0.24
       );
     }
     // Hold the last station slightly longer by padding the timeline
